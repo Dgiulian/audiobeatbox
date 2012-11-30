@@ -7,11 +7,13 @@
 
     <script type="text/javascript" src="BufferObjLoader.js"></script>
     <script type="text/javascript" src="soundFiles.js"></script>
+    <script type="text/javascript" src="EchoNode.js"></script>
     <script type="text/javascript" src="Beats.js"></script>
 </head>
 
 <body>
     <h1>Web Audio Beatbox </h1>
+    <div id="loading"><h2><img src="loader.gif" alt="loading" width="30" height="30"> Loading Sounds. Please wait.</h2></div>
     <div id="beats">
         <div id="k49"  class="beat">1</div>
         <div id="k50"  class="beat">2</div>
@@ -65,6 +67,34 @@
         <div id="k190" class="beat">.</div>
         <div id="k189" class="beat">-</div>
         
+    </div>
+    <div id="controls">
+
+        <div class="control" id="echo">
+            <h2 class="name" >
+                <labelfor="echo_enable">Echo</label>
+                <input type="checkbox" name="echo_enable" id="echo_enable" checked>
+            </h2> 
+            <label for="echo_delay">Delay: </label>
+            <input type="range" name="echo_delay" id="echo_delay" min="1" max="100" value="10" > 
+            <span id="echo_delay_value">0.5ms</span>
+            <br>
+            <label for="echo_gain">Gain:</label>
+            <input type="range" name="echo_gain" id="echo_gain" min="1" max="9" value="5" >
+            <span id="echo_gain_value">0.5dB</span> <br>
+        </div>
+          
+        <div class="control" id="volume">
+            <h2 class="name" >
+                <labelfor="echo_enable">Volumen</label>
+                <input type="checkbox" name="echo_enable" id="echo_enable" checked>
+            </h2> 
+            <br>
+            <label for="volume_gain">Gain:</label>
+            <input type="range" name="volume_gain" id="volume_gain" min="0" max="200" value="100" >
+            <span id="volume_gain_value">100%</span> <br>
+        </div>
+
     </div>
     <div id="descripcion">
         Beatbox muy simple que utiliza la API de Audio de Chrome. <br/>

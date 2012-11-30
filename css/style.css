@@ -1,5 +1,7 @@
 body{
     background-image: url('../otis_redding.png');
+    margin: 0;
+    padding: 0;
 }
 #beats{
     width: 725px;
@@ -8,12 +10,40 @@ body{
     border-radius: 12px;
     padding: 5px 0 0 5px;
     position: absolute;
-    /*margin: 0 auto;*/
     top:150px;
     left: 70px;
     box-shadow: 2px 2px #000;
     background-color: #fff;
+    /*display: none;*/
 }
+#loading{
+    width: 725px;
+    height: 250px;
+    border: 1px solid;
+    border-radius: 12px;
+    padding: 5px 0 0 5px;
+    position: absolute;
+    top:150px;
+    left: 70px;
+    box-shadow: 2px 2px #000;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 10;
+}
+#loading h2{
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top:40%;
+    line-height: 30px;
+    margin: 0;
+    padding: 0;
+    color:#fff;
+    text-shadow:1px 1px #000;
+    z-index: 10;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 .beat{
     width: 50px;
     height: 50px;
@@ -39,7 +69,7 @@ body{
 }
 h1{
     text-align: center;
-    font-family: "Arial Rounded MT Bold",Arial, Helvetica, sans-serif;;
+    font-family: "Arial Rounded MT Bold",Arial, Helvetica, sans-serif;
     color: #fff;
     text-transform: uppercase;
     text-shadow:2px 3px #000;
@@ -57,4 +87,59 @@ h1{
     top: 150px;
     right: 10px;
     font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+    background-color: #DDD;
+    border-radius: 10px;
+    padding: 5px;
+}
+/*  Controles */
+#controls{
+    position: fixed;
+    width: 100%;
+    bottom: 0px;
+    height: 100px;
+    background-color: #ddd;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;    
+    font-size: 12pt;
+}
+
+
+
+.control input[type="range"]{
+    clear:both;
+    margin: 0;
+    padding: 0;
+}
+.control{
+    width: 230px;
+    height: 100%;
+    padding-top: 5px;
+    border-right: 2px solid #fff;
+    float: left;
+}
+.control:last-child{
+    border-right: none;
+}
+
+.control label{
+    display: inline-block;
+    width: 50px;
+    text-align: right;
+    font-weight: bold;
+    color: #333;
+    font-size: 0.8em;
+}
+.control span{
+    font-size: 0.7em;
+}
+.name{
+    margin: 0;
+    padding: 0;
+    font-size: 13pt;
+    width: 100%;
+    height: 20px;
+    text-align: center;
+    margin-bottom: 5px;
+    border-bottom: 2px solid #fff;
 }
