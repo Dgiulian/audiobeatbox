@@ -9,32 +9,32 @@
 */
 function EchoNode(context,o){
     if (!o) o={};
-    this.gn = context.createGainNode();
-    this.dn = context.createDelayNode();
-    this.dn.connect(this.gn);
-    this.gn.connect(this.dn);
-    this.input = null;
-    this.output = null;
-    this.gain(o.gain || 0.4);
-    this.delay(o.delay || 0.1);     
+
+    this.input  =  context.createGainNode();
+    this.output = context.createGainNode();
+    var     gn = context.createGainNode(),
+            dn = context.createDelayNode();
+    
+    this.delay = function (d){
+        dn.delayTime.value = d;
+    }
+    this.gain = function (g){ // Setea el valor de la ganancia. Este valor no puede ser mayor que 1 
+        g = (g>1)? g % 1: g;
+        gn.gain.value = g;
+    }
+    this.gain(o.gain   || 0.4);
+    this.delay(o.delay || 0.1); 
+
+    dn.connect(gn);
+    gn.connect(dn);    
+    dn.connect(this.output);
+    this.input.connect(dn);
+    this.input.connect(this.output);  
 }
 
-EchoNode.prototype.in = function(input){
-    input.connect(this.dn);
-    this.input = input;   
-    if (this.output) { input.connect(this.output);}
-
+EchoNode.prototype.connect = function(target){
+     this.output.connect(target);
 }
-EchoNode.prototype.out = function(output){
-    if(this.input) { this.input.connect(output);}
-    this.dn.connect(output);
-    this.output = output;
-}
-EchoNode.prototype.delay = function(d){
-    this.dn.delayTime.value = d;
-}
-EchoNode.prototype.gain = function(g){
-    /* Setea el valor de la ganancia. Este valor no puede ser mayor que 1 */
-    g = (g>1)? g % 1: g;
-    this.gn.gain.value = g;
+EchoNode.prototype.disconnect = function(){
+    this.output.disconnect();
 }

@@ -2,9 +2,9 @@ var context,
     bufferList,
     outputNode;
 var keyCodes = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 186,187, 188, 189, 190, 191, 192, 219, 221, 222, 226];
-var urlList = [];
 var config = {
-    "echo": {"enable":true,"delay":0.1,"gain":0.4},
+    "echo": {"enable":false,"delay":0.1,"gain":0.4},
+    "convolver":{"enable":false,"buffer":null},
     "volume":{gain:1},
 }
 
@@ -12,6 +12,7 @@ var init = {
     start:function(){
        this.context();
        this.buffers();
+       this.convolvers();
        this.handlers();
     },
     context:function(){
@@ -33,12 +34,19 @@ var init = {
         BL.load();
 
     },
+    convolvers:function(){
+        
+        var RL = new BufferLoader(context,convolverUrls,function(){
+            convolverList = RL.bufferList;
+            config.convolver.buffer = convolverList['Trig_Room'];
+        });
+        RL.load();
+    },
     handlers:function(){
         //Cargamos los handlers de las teclas que reproduciran los sonidos
 
         var beats = document.querySelectorAll(".beat");        
         for(var i =0; i< beats.length;i++){            
-            //beats[i].addEventListener("click",handlers.click);
             beats[i].onclick = handlers.click;
             beats[i].onmousedown = handlers.mousedown;
             beats[i].onmouseup = handlers.mouseup;
@@ -47,12 +55,12 @@ var init = {
         }
         window.addEventListener('keydown',handlers.keydown);
         window.addEventListener('keyup',handlers.keyup);
-        document.getElementById('echo_enable').addEventListener('change',handlers.echo_enable);
-        document.getElementById('echo_delay').addEventListener('change',handlers.echo_delay);
-        document.getElementById('echo_gain').addEventListener('change',handlers.echo_gain);
-        document.getElementById('volume_gain').addEventListener('change',handlers.volume_gain);
-
-        
+        document.getElementById('echo_enable').onchange    = handlers.echo_enable;
+        document.getElementById('echo_delay').onchange     = handlers.echo_delay;
+        document.getElementById('echo_gain').onchange      = handlers.echo_gain;
+        document.getElementById('volume_gain').onchange    = handlers.volume_gain;
+        document.getElementById('convolver_type').onchange = handlers.convolver_change;
+        document.getElementById('convolver_enable').onchange = handlers.convolver_enable;
     }
 };
 
@@ -64,7 +72,6 @@ var handlers = {
     },
     mousedown:function(e){
         this.style.backgroundColor = "#d00";        
-        // var i =  randInt(0,bufferList.length);
         if (bufferList[this.id]) { 
             playSound(bufferList[this.id]);
         }
@@ -78,23 +85,19 @@ var handlers = {
     keydown:function(e){
         //Buscar si el keyCode de la tecla presionada esta dentro de las teclas definidas.
         // Si no, hacer un return
-        if(keyCodes.indexOf(e.keyCode) == -1) {
-            return; 
-        }
-        
+        if(keyCodes.indexOf(e.keyCode) == -1) return; 
+
         var element = document.querySelector("#k" + e.keyCode);        
-        if(e){ 
+        if(element)
             element.onmousedown();
-        }
     },
     keyup:function(e){
         if(keyCodes.indexOf(e.keyCode) == -1) {
             return; 
         }        
         var element = document.querySelector("#k" + e.keyCode);        
-        if(e){         
-            element.onmouseup();        
-        }
+        if(element)
+            element.onmouseup();                
     },
     echo_enable:function(){
         config.echo.enable = this.checked;
@@ -111,6 +114,19 @@ var handlers = {
         config.volume.gain = this.value / 100;
         showValue(this.id + '_value',config.volume.gain * 100 + "%");
     },
+    convolver_change:function(){       
+        if(convolverList[this.value]){
+            config.convolver.buffer = convolverList[this.value];       
+        }else {
+            console.log("Null buffer");
+            config.convolver.buffer = null;
+        }
+
+    },
+    convolver_enable:function(){
+        config.convolver.enable = this.checked;
+        document.getElementById('convolver_type').onchange();
+    }
 
 }
 function showValue(id,value){
@@ -118,27 +134,25 @@ function showValue(id,value){
     if(elem){elem.innerText = value}
 }
 
-
 function playSound(buffer){
-    var soundSource = context.createBufferSource();
-    var volume = context.createGainNode();
-    
+    var soundSource    = context.createBufferSource();
+    var volume         = context.createGainNode();    
+    var nl             = new NodeList();
     soundSource.buffer = buffer;
-    volume.gain.value = config.volume.gain;
-    outputNode = volume;
-    
-    if(config.echo.enable) {
-        var echo = new EchoNode(context,{'delay':config.echo.delay,'gain':config.echo.gain});        
-        echo.in(soundSource);
-        echo.out(outputNode);
-    } else{
-        soundSource.connect(outputNode);            
-    }
-    
-    volume.connect(context.destination);
-    soundSource.noteOn(0);
+    volume.gain.value  = config.volume.gain;
 
-}
-function randInt(min,max){
-    return Math.floor(Math.random() * (max - min) + min);
+    nl.add(soundSource);
+    if(config.echo.enable){
+        var echo = new EchoNode(context,{'delay':config.echo.delay,'gain':config.echo.gain});    
+        nl.add(echo);
+    }
+    if(config.convolver.enable){
+        var convolver = new ConvolverNode(context,{'buffer':config.convolver.buffer});
+        nl.add(convolver);
+    }
+
+    nl.add(volume);
+    nl.add(context.destination);
+    nl.connect();
+    soundSource.noteOn(0);
 }

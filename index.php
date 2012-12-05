@@ -8,6 +8,8 @@
     <script type="text/javascript" src="BufferObjLoader.js"></script>
     <script type="text/javascript" src="soundFiles.js"></script>
     <script type="text/javascript" src="EchoNode.js"></script>
+    <script type="text/javascript" src="ConvolverNode.js"></script>
+    <script type="text/javascript" src="NodeList.js"></script>
     <script type="text/javascript" src="Beats.js"></script>
 </head>
 
@@ -73,7 +75,7 @@
         <div class="control" id="echo">
             <h2 class="name" >
                 <labelfor="echo_enable">Echo</label>
-                <input type="checkbox" name="echo_enable" id="echo_enable" checked>
+                <input type="checkbox" name="echo_enable" id="echo_enable" >
             </h2> 
             <label for="echo_delay">Delay: </label>
             <input type="range" name="echo_delay" id="echo_delay" min="1" max="100" value="10" > 
@@ -84,10 +86,31 @@
             <span id="echo_gain_value">0.5dB</span> <br>
         </div>
           
+        <div class="control" id="convolver">
+            <h2 class="name" >
+                <labelfor="convolver_enable">Convolver</label>
+                <input type="checkbox" name="convolver_enable" id="convolver_enable" >
+            </h2> 
+            <br>
+            <label for="convolver_type">Tipo</label>
+            <select name="convolver_type" id="convolver_type" >
+                <option value="Trig_Room">Trig Room</option>
+                <option value="Rays">Rays</option>
+                <option value="Parking_Garage">Parking Garage</option>
+                <option value="Nice_Drum_Room">Nice Drum Room</option>
+                <option value="Narrow_Bumpy_Space">Narrow Bumpy Space</option>
+                <option value="Going_Home">Going Home</option>
+                <option value="Five_Columns">Five Columns</option> 
+                <option value="Five_Columns_Long">Five Columns Long</option>
+                <option value="French_18th_Century_Salon">French 18th Century Salon</option>
+                <option value="In_The_Silo_Revised">In The Silo Revised</option>
+            </select>
+        </div>
+
         <div class="control" id="volume">
             <h2 class="name" >
-                <labelfor="echo_enable">Volumen</label>
-                <input type="checkbox" name="echo_enable" id="echo_enable" checked>
+                <labelfor="volume_enable">Volumen</label>
+                <!-- <input type="checkbox" name="volume_enable" id="volume_enable" checked> -->
             </h2> 
             <br>
             <label for="volume_gain">Gain:</label>

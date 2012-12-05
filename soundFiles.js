@@ -46,8 +46,20 @@ var soundFiles = {
 "k188":"audio/ST0T0S0.WAV",
 "k190":"audio/ST0T0S3.WAV",
 "k189":"audio/ST0T0S7.WAV"
-}
+};
 
+var convolverUrls = {    
+    "Trig_Room":                "reverb/Trig_Room.wav",
+    "Rays":                     "reverb/Rays.wav",
+    "Parking_Garage":           "reverb/Parking_Garage.wav",
+    "Nice_Drum_Room":           "reverb/Nice_Drum_Room.wav",
+    "Narrow_Bumpy_Space":       "reverb/Narrow_Bumpy_Space.wav",
+    "Going_Home":               "reverb/Going_Home.wav",
+    "Five_Columns":             "reverb/Five_Columns.wav",
+    "Five_Columns_Long":        "reverb/Five_Columns_Long.wav",
+    "French_18th_Century_Salon":"reverb/French_18th_Century_Salon.wav",
+    "In_The_Silo_Revised":      "reverb/In_The_Silo_Revised.wav",
+};
 
 
 
